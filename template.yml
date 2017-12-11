@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Local Sample
+Resources:
+  FormHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs6.10
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - ses:SendEmail
+                - ses:SendRawEmail
+              Resource: '*'
+      Environment:
+        Variables:
+          AWS_END_POINT: ''
+          FROM_MAIL_ADDRESS: ''
+          TO_MAIL_ADDRESS: ''
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /send
+            Method: post
