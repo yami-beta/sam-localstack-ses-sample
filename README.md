@@ -1,6 +1,6 @@
 # sam-localstack-ses-sample
 
-Test Lambda function (send email with AWS SES) by sam-local and localstack.
+Test Lambda function (send email with AWS SES) by SAM Local and LocalStack.
 
 - sam-local
 - localstack
