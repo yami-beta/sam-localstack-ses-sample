@@ -44,7 +44,7 @@ export const formHandler = ({ event, context, callback, ses, config }) => {
       sendMail(ses, json.subject, json.body, config).then((result) => {
         callback(null, createResponse(200, { message: 'Succeed to send mail' }))
       }).catch((err) => {
-        callback(null, createResponse(500, { message: 'Faild to send mail' }))
+        callback(null, createResponse(500, { message: err.message }))
       });
       break;
     }
