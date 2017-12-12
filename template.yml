@@ -5,7 +5,7 @@ Resources:
   FormHandler:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.handler
+      Handler: dist/index.handler
       Runtime: nodejs6.10
       Policies:
         - Version: '2012-10-17'

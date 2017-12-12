@@ -1,16 +1,25 @@
 # sam-localstack-ses-sample
 
-Test Lambda function (send email with AWS SES) by SAM Local and LocalStack.
+This repository is a sample of following architecture.  
+Lambda function for sending email by AWS SES.
 
-- sam-local
-- localstack
+- SAM Local
+- LocalStack
 - AWS SES
+
+## Run
+
+```sh
+$ yarn run build
+$ docker network create -d bridge sam-localstack
+$ docker-compose up -d
+$ sam local start-api --docker-network $(docker network inspect --format='{{.Id}}' sam-localstack) --env-vars env.json
+```
 
 ## Test
 
 ```sh
-$ docker network create -d bridge sam-localstack
 $ docker-compose up -d
-$ sam local start-api --docker-network $(docker network inspect --format='{{.Id}}' sam-localstack) --env-vars env.json
+$ yarn test
 ```
 

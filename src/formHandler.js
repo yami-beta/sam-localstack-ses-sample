@@ -1,16 +1,17 @@
-const AWS = require('aws-sdk');
 
-const ses = new AWS.SES({
-  apiVersion: '2010-12-01',
-  endpoint: new AWS.Endpoint(process.env.AWS_END_POINT),
-});
+const createResponse = (statusCode, body) => {
+  return {
+    statusCode,
+    body: JSON.stringify(body),
+  };
+};
 
-const sendMail = (subject, body) => {
+const sendMail = (ses, subject, body, config) => {
   return new Promise((resolve, reject) => {
     const params = {
-      Source: process.env.FROM_MAIL_ADDRESS,
+      Source: config.fromMailAddress,
       Destination: {
-        ToAddresses: [ process.env.TO_MAIL_ADDRESS ],
+        ToAddresses: [ config.toMailAddress ],
       },
       Message: {
         Subject: {
@@ -34,20 +35,13 @@ const sendMail = (subject, body) => {
       resolve(data);
     });
   });
-}
-
-const createResponse = (statusCode, body) => {
-  return {
-    statusCode,
-    body: JSON.stringify(body),
-  };
 };
 
-exports.handler = (event, context, callback) => {
+export const formHandler = ({ event, context, callback, ses, config }) => {
   switch(event.httpMethod) {
     case 'POST': {
       const json = JSON.parse(event.body);
-      sendMail(json.subject, json.body).then((result) => {
+      sendMail(ses, json.subject, json.body, config).then((result) => {
         callback(null, createResponse(200, { message: 'Succeed to send mail' }))
       }).catch((err) => {
         callback(null, createResponse(500, { message: 'Faild to send mail' }))
@@ -59,3 +53,4 @@ exports.handler = (event, context, callback) => {
     }
   }
 };
+
